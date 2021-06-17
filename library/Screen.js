@@ -1,3 +1,7 @@
+/**
+  * @typedef {{({ cooldown, timestamp, start }: { cooldown: number, timestamp: number, start: number }): (boolean | void) }} AnimationFrameController
+  */
+
 import Vector from 'javascript-algebra/library/Vector.js';
 
 /** */
@@ -132,6 +136,33 @@ import Vector from 'javascript-algebra/library/Vector.js';
       this.#height = h;
       this.#size   = s;
       this.#center = c;
+    }
+
+  /** / pointer @static
+    * @param {MouseEvent} event положение курсора мыши
+    * @return {Vector} координаты мыши
+    */
+    static pointer(event) {
+      return event
+        ? Vector.from(event.pageX, event.pageY)
+        : Vector.zero;
+    }
+
+  /** / animation @static
+   * @param {AnimationFrameController} render контроллер анимации
+   */
+    static animation(render) {
+      const start = performance.now();
+      requestAnimationFrame(frame);
+
+    /** */
+      function frame(timestamp) {
+        const cooldown = timestamp - start;
+        const params = { cooldown, timestamp, start };
+        const stop = render(params);
+        if (stop === false) return;
+        requestAnimationFrame(frame);
+      }
     }
   }
 
