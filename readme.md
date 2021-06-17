@@ -98,4 +98,7 @@ screen.width  // number
 screen.height // number
 screen.size   // javascript-algebra/Vector
 screen.center // javascript-algebra/Vector
+
+Screen.pointer(mouseEvent) // javascript-algebra/Vector
+Screen.animation(render) // requestAnimationFrame
 ```
