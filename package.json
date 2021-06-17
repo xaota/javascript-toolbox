@@ -1,12 +1,9 @@
 {
   "name": "javascript-toolbox",
-  "version": "0.97.0",
+  "version": "1.0.0",
   "type": "module",
   "description": "Популярные операции для создания приложений",
   "main": "./index.js",
-  "exports": {
-    ".": "./index.js"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "./node_modules/eslint/bin/eslint.js .",
@@ -24,7 +21,7 @@
     "UUID",
     "locator"
   ],
-  "author": "https://github.com/xaota",
+  "author": "xaonya",
   "license": "Unlicense",
   "bugs": {
     "url": "https://github.com/xaota/javascript-toolbox/issues"

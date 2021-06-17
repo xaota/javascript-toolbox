@@ -26,6 +26,7 @@
     "no-multi-spaces": "off",
     "no-dupe-class-members":"warn",
     "key-spacing":"off",
+    "accessor-pairs": "off",
     "require-jsdoc": [
       "warn",
       {
