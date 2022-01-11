@@ -40,7 +40,7 @@ import Vector from 'javascript-algebra/library/Vector.js';
       return this.#observed;
     }
 
-  /** */
+  /** / observe */
     observe(node, handler = node?.resize) {
       const observed = this.observed;
       const index = observed.findIndex(item => item.node === node);
@@ -60,8 +60,8 @@ import Vector from 'javascript-algebra/library/Vector.js';
       return this;
     }
 
-  /** */
-    unObserve(node, ...handlers) {
+  /** / unobserve */
+    unobserve(node, ...handlers) {
       const observed = this.observed;
       const index = observed.findIndex(item => item.node === node);
       if (index >= 0) {

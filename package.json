@@ -1,13 +1,14 @@
 {
   "name": "javascript-toolbox",
-  "version": "1.1.1",
+  "version": "1.2.2",
   "type": "module",
   "description": "Популярные операции для создания приложений",
   "main": "./index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "./node_modules/eslint/bin/eslint.js .",
-    "clear": "rm -rf node_modules package-lock.json"
+    "lint": "./node_modules/eslint/bin/eslint.js index.js library",
+    "clear": "rm -rf node_modules package-lock.json",
+    "development": "npm link javascript-std-lib javascript-algebra"
   },
   "repository": {
     "type": "git",
@@ -28,15 +29,11 @@
   },
   "homepage": "https://github.com/xaota/javascript-toolbox#readme",
   "devDependencies": {
-    "@types/node": "^14.14.41",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^7.24.0",
-    "eslint-config-standard": "^16.0.2",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.3.1"
+    "@types/node": "^17.0.1",
+    "eslint": "^8.5.0"
   },
   "dependencies": {
-    "javascript-algebra": "^1.7.7"
+    "javascript-std-lib": "latest",
+    "javascript-algebra": "latest"
   }
 }
