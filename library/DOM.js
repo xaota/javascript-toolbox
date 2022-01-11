@@ -1,7 +1,13 @@
 /** Тулзы для работы с DOM {DOM} @class
   */
   export default class DOM {
-    /** */
+  /** */
+    static clear(node) {
+      while (node.firstChild) node.firstChild.remove();
+      return node;
+    }
+
+  /** */
     static swap(nodeA, nodeB) {
       const A = nodeA.nextElementSibling;
       const B = nodeB.nextElementSibling;
@@ -10,7 +16,7 @@
       root.insertBefore(nodeA, B);
     }
 
-    /** */
+  /** */
     static coords(elem) {   // кроме IE8-
       const box = elem.getBoundingClientRect();
       return {
@@ -19,7 +25,7 @@
       };
     }
 
-    /** */
+  /** */
     static path(el) {
       if (!el) return;
 
