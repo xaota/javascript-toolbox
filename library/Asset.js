@@ -12,7 +12,12 @@
     }
 
   /** */
-    static async SVG(path) {
+    static async image(path) {
+      // ...
+    }
+
+  /** */
+    static async svg(path) {
       const SVG = await Asset.text(path);
       const fragment = document.createElement('template');
       fragment.innerHTML = SVG.trim();

@@ -7,7 +7,7 @@ $ npm install javascript-toolbox
 
 ## Использование в браузере
 
-Необходимо сделать serve для запросов к папке `/javascript-toolbox -> ./node_modulesjavascript-toolbox`
+Необходимо сделать serve для запросов к папке `/javascript-toolbox -> ./node_modules/javascript-toolbox`
 
 ```html
 <script type="importmap">
@@ -101,4 +101,25 @@ screen.center // javascript-algebra/Vector
 
 Screen.pointer(mouseEvent) // javascript-algebra/Vector
 Screen.animation(render) // requestAnimationFrame
+```
+
+### Gestures - работа с жестами (тачпад)
+```javascript
+new Gestures(element)
+  .start(_ => ({ scale, rotation })) // стартовые значения (position?)
+  .translate(({ difference }) => scene.move(difference))
+  .scale(({ scale }) => scene.scale(scale))
+  .rotate(({ rotation }) => scene.rotate(rotation));
+```
+
+### Context-Store API
+```javascript
+
+const context = new Context("name", { data: 0 }, (initState) => { data: initState.data + 1 });
+
+context.dispatch({ data: 2 })
+
+context.on(() => {
+  context.select(store => store.data); // 2
+});
 ```

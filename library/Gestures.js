@@ -4,6 +4,14 @@ import Vector from 'javascript-algebra/library/Vector.js';
 /** Жесты */
   export default class Gestures {
   /** */
+    #previous = 0;
+
+    static cooldown = 300;
+
+  /** */
+    #afterTimeout = null;
+
+  /** */
     constructor(element) {
       this.element  = element;
       this.callback = {};
@@ -13,8 +21,13 @@ import Vector from 'javascript-algebra/library/Vector.js';
     }
 
   /** */
-    start(callback) {
-      return this.action('start', callback);
+    before(callback) {
+      return this.action('before', callback);
+    }
+
+  /** */
+    after(callback) {
+      return this.action('after', callback);
     }
 
   /** */
@@ -39,7 +52,18 @@ import Vector from 'javascript-algebra/library/Vector.js';
       /** */
       function handler(e) {
         e.preventDefault(); // - passive!
-        listener.call(item, e);
+        if (item.#afterTimeout) clearTimeout(item.#afterTimeout);
+
+        const current = new Date().valueOf();
+        const repeat = current - item.#previous <= Gestures.cooldown;
+        item.#previous = current;
+
+        listener.call(item, e, repeat);
+
+        item.#afterTimeout = setTimeout(() => {
+          item.callback.after?.call(item.element);
+        }, Gestures.cooldown);
+
         return false;
       }
     }
@@ -54,18 +78,21 @@ import Vector from 'javascript-algebra/library/Vector.js';
 // #region [Private]
 /** Обработка жестов через события мыши / wheel
   * @param {Event} event событие
+  * @param {boolean} repeat продолжение жеста
   * @this {Gestures}
   */
-  function wheel(event) {
+  function wheel(event, repeat) {
     const root     = this.element;
     const callback = this.callback;
     const meta = {
       rotation: 0,
-      scale:    1
+      scale:    Vector.one,
+      origin: Vector.from(event.x, event.y)
     };
+    // console.log(event);
 
-    if (callback.start) {
-      const start = callback.start.call(root, meta);
+    if (!repeat && callback.before) {
+      const start = callback.before.call(root, meta);
       Object.assign(meta, start);
     }
 
@@ -76,19 +103,22 @@ import Vector from 'javascript-algebra/library/Vector.js';
     const delta = Vector.from(event.deltaX, event.deltaY);
 
     if (scale) {
-      callback.scale({scale: meta.scale.difference(Vector.one.scale(event.deltaY * 0.01))});
+      callback.scale({ repeat, origin: meta.origin, scale: meta.scale.difference(Vector.one.scale(event.deltaY * 0.01)) });
     } else if (rotate) {
-      callback.rotate({rotation: meta.rotation - event.deltaY / 100});
+      callback.rotate({ repeat, origin: meta.origin, rotation: meta.rotation - event.deltaY / 100 });
     } else if (translate) {
-      callback.translate({difference: delta});
+      callback.translate({ repeat, origin: meta.origin, difference: delta });
     }
   }
 
 /** Обработка жестов через события трекпада / gesturestart
   * @param {Event} event событие
+  // * @param {boolean} repeat продолжение жеста (неактуально)
   * @this {Gestures}
   */
   function gesturestart(event) {
+    console.log("gesturestart", event);
+
     const root     = this.element;
     const callback = this.callback;
     const coords   = DOM.coords(root);
@@ -102,8 +132,8 @@ import Vector from 'javascript-algebra/library/Vector.js';
       scale     : 1
     };
 
-    if (callback.start) {
-      const start = callback.start.call(root, meta);
+    if (callback.before) {
+      const start = callback.before.call(root, meta);
       Object.assign(meta, start);
     }
 
@@ -138,6 +168,7 @@ import Vector from 'javascript-algebra/library/Vector.js';
       ev.preventDefault();
       root.removeEventListener("gesturechange", change, false);
       root.removeEventListener("gestureend",    end,    false);
+      // callback.after
       return false;
     }
   }

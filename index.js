@@ -1,3 +1,5 @@
+// export { default as EventChannel, BrowserEventChannel, NodeEventChannel } from "./events/index.js";
+
 export { default as DOM }      from './library/DOM.js';
 export { default as UUID }     from './library/UUID.js';
 export { default as Asset }    from './library/Asset.js';
